@@ -1,0 +1,85 @@
+#version: "3.8"
+#
+#services:
+#  # Build local service images from sibling repos (assumes they exist side-by-side)
+#  auth-service:
+#    build:
+#      context: ../auth-service
+#      dockerfile: Dockerfile
+#    image: aip/auth-service:local
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=local
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      - postgres
+#      - redis
+#
+#  user-service:
+#    build:
+#      context: ../user-service
+#      dockerfile: Dockerfile
+#    image: aip/user-service:local
+#    ports:
+#      - "8082:8082"
+#    depends_on:
+#      - postgres
+#      - redis
+#
+#  content-service:
+#    build:
+#      context: ../content-service
+#      dockerfile: Dockerfile
+#    image: aip/content-service:local
+#    ports:
+#      - "8083:8083"
+#    depends_on:
+#      - minio
+#      - postgres
+#      - rabbitmq
+#
+#  ingest-service:
+#    build:
+#      context: ../ingest-service
+#      dockerfile: Dockerfile
+#    image: aip/ingest-service:local
+#    ports:
+#      - "8084:8084"
+#    depends_on:
+#      - minio
+#      - rabbitmq
+#      - milvus
+#
+#  qa-service:
+#    build:
+#      context: ../qa-service
+#      dockerfile: Dockerfile
+#    image: aip/qa-service:local
+#    ports:
+#      - "8085:8085"
+#    depends_on:
+#      - milvus
+#      - opensearch
+#
+#  gateway-graphql:
+#    build:
+#      context: ../gateway-graphql
+#      dockerfile: Dockerfile
+#    image: aip/gateway-graphql:local
+#    ports:
+#      - "4000:4000"
+#    depends_on:
+#      - auth-service
+#      - user-service
+#      - content-service
+#      - qa-service
+#
+#  frontend:
+#    build:
+#      context: ../frontend-react
+#      dockerfile: Dockerfile
+#    image: aip/frontend-react:local
+#    ports:
+#      - "3000:3000"
+#    depends_on:
+#      - gateway-graphql

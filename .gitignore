@@ -1,0 +1,94 @@
+# -----------------------------------------------------------------------------
+# aip-lms-infra .gitignore
+# -----------------------------------------------------------------------------
+
+# === Environment & secrets ===
+.env
+.env.local
+.env.*.backup
+*.pem
+*.key
+*.crt
+
+# === Docker artifacts ===
+# Compose build artifacts and local data volumes
+**/postgres_data/
+**/redis_data/
+**/rabbitmq_data/
+**/minio_data/
+**/opensearch_data/
+**/milvus_data/
+**/grafana_data/
+**/prometheus_data/
+
+# Compose override auto-generated
+docker-compose.override.local.yml
+docker-compose.override.personal.yml
+
+# Docker logs & temp
+*.log
+*.tmp
+*.pid
+*.swp
+*.bak
+*.old
+**/logs/
+**/tmp/
+
+# === IDE / Editors ===
+# IntelliJ / JetBrains
+.idea/
+*.iml
+
+# VSCode
+.vscode/
+.history/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# === OS / Misc ===
+.DS_Store
+Thumbs.db
+
+# === Node-related (frontend logs or dev) ===
+node_modules/
+npm-debug.log*
+
+# === Maven / Gradle caches (if any helper scripts) ===
+target/
+build/
+out/
+
+# === Helm / K8s generated ===
+helm/charts/**/charts/
+helm/charts/**/tmp/
+helm/charts/**/Chart.lock
+*.tgz
+
+# === Jenkins artifacts ===
+jenkins/workspace/
+jenkins/.scannerwork/
+**/reports/
+**/coverage/
+**/.sonar/
+
+# === Backups / archives ===
+*.zip
+*.tar.gz
+*.tar
+*.bak
+
+# === Python helpers (if used for scripts) ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# === Terraform / IaC (if added later) ===
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars

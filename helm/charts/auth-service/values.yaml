@@ -1,0 +1,10 @@
+replicaCount: 1
+image:
+  repository: docker.io/aiplms/auth-service
+  tag: latest
+service:
+  port: 8081
+resources: {}
+ingress:
+  enabled: false
+secrets: {}

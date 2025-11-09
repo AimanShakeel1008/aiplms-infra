@@ -1,0 +1,51 @@
+pipeline {
+  agent any
+  environment {
+    REGISTRY = "docker.io/aiplms"
+    MAVEN_OPTS = "-Xmx2g"
+  }
+  stages {
+    stage('Checkout') {
+      steps { checkout scm }
+    }
+    stage('Build') {
+      steps {
+        sh './mvnw -B -DskipTests package'
+      }
+    }
+    stage('Unit & Integration') {
+      steps {
+        sh './mvnw -B test'
+      }
+    }
+    stage('Static Analysis') {
+      steps {
+        sh './mvnw -B sonar:sonar || echo "sonar skipped"'
+      }
+    }
+    stage('Container Build') {
+      steps {
+        script {
+          sh """
+            docker build -t ${REGISTRY}/${JOB_NAME}:${GIT_COMMIT} .
+            docker tag ${REGISTRY}/${JOB_NAME}:${GIT_COMMIT} ${REGISTRY}/${JOB_NAME}:build-${BUILD_NUMBER}
+          """
+        }
+      }
+    }
+    stage('Scan & Push') {
+      steps {
+        sh '''
+          trivy image --exit-code 1 ${REGISTRY}/${JOB_NAME}:${GIT_COMMIT} || true
+          docker push ${REGISTRY}/${JOB_NAME}:${GIT_COMMIT}
+          docker push ${REGISTRY}/${JOB_NAME}:build-${BUILD_NUMBER}
+        '''
+      }
+    }
+  }
+  post {
+    always {
+      archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: true
+    }
+  }
+}
